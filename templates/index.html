@@ -6,6 +6,7 @@
     <title>myAPT - Book Smarter, Schedule Faster</title>
 </head>
 <body>
+    <!-- navbar -->
     <header class="navbar">
         <div class="navbar-container">
             <a href="#" class="logo" id="logo-brand">
@@ -30,7 +31,218 @@
             </div>
         </div>
     </header>
+    <!-- landing page -->
+     <main>
+        <section class="hero" id="hero-section">
+            <div class="hero-container">
+                <div class="hero-left">
+                    <div class="hero-card">
+                        <span class="hero-badge">
+                            <span class="badge-icon">O</span>Simple Scheduling platform
+                        </span>
+                        <h1 class="hero-title">Book smarter.<br><span class="gradient-text">Schedule faster.</span></h1>
+                        <p class="hero-description">myAPT is a lightweight, customizable booking platform that helps freelancers, tutors. consultants, and professional automate their appointments. Set your hours, share your hours. share your links, and let client schedule in seconds</p>
+                        <div class="hero-actions">
+                            <a href="#get=started" class="btn btn-primary" id="cta-get-started">
+                                Get Started Now <i class="fa-solid fa-arrow-right icon-right"></i>
+                            </a>
+                            <a href=":#watch-demo" class="btn btn-secondary" id="cta-watch-demo">
+                                <i class="fa-solid fa-play icon-left"></i> Watch Demo!
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-    
+                <div class="hero-right">
+                    <div class="mockup-wrapper">
+                        <div class="glow-bg"></div>
+
+                        <div class="scheduler-mockup" id="scheduler-widget">
+                            <div class="scheduler-header">
+                                <div class="host-profile">
+                                    <div class="host-avatar">
+                                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120&h=120" alt="Sarah Jenkis">
+                                        <span class="status-indicator"></span>
+                                    </div>
+                                    <div class="host-info">
+                                        <h3 class="host-name">Sujal Negi</h3>
+                                        <p class="host-title">Consultant & Frontend Architect</p>
+                                    </div>
+                                </div>
+                                <div class="meeting-meet"><span class="duration-tag"><i class="fa-regular fa-clock"></i>30 Min</span>
+                                </div>
+                            </div>
+                            <div class="scheduler-body">
+                                <div class="calendar-panel">
+                                    <div class="calendar-header">
+                                        <button class="calendar-nav-btn" diabled><i class="fa-solid fa-chevron-left"></i></button>
+                                        <span class="calendar-month-year">June 2026</span>
+                                        <button class="calendar-nav-btn" disabled><i class="fa-solid fa-chevron-right"></i></button>
+                                    </div>
+                                    <div class="calendar-weekdays"
+                                    <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                                </div>
+                                <div class="calendar-days" id="calendar-days-grid">
+                                    <span class="day-empty"></span><span class="day-empty"></span>
+                                    <button class="calendar-day active" data-day="1">1</button>
+                                    <button class="calendar-day" data-day="2">2</button>
+                                    <button class="calendar-day" data-day="3">3</button>
+                                    <button class="calendar-day" data-day="4">4</button>
+                                    <button class="calendar-day" data-day="5">5</button>
+                                    <button class="calendar-day" data-day="6">6</button>
+                                        <button class="calendar-day" data-day="7">7</button>
+                                        <button class="calendar-day" data-day="8">8</button>
+                                        <button class="calendar-day" data-day="9">9</button>
+                                        <button class="calendar-day active" data-day="10">10</button>
+                                        <button class="calendar-day" data-day="11">11</button>
+                                        <button class="calendar-day" data-day="12">12</button>
+                                        <button class="calendar-day" data-day="13">13</button>
+                                        <button class="calendar-day" data-day="14">14</button>
+                                        <button class="calendar-day" data-day="15">15</button>
+                                        <button class="calendar-day active" data-day="16">16</button>
+                                        <button class="calendar-day" data-day="17">17</button>
+                                        <button class="calendar-day" data-day="18">18</button>
+                                        <button class="calendar-day" data-day="19">19</button>
+                                        <button class="calendar-day" data-day="20">20</button>
+                                        <button class="calendar-day" data-day="21">21</button>
+                                        <button class="calendar-day" data-day="22">22</button>
+                                        <button class="calendar-day active" data-day="23">23</button>
+                                        <button class="calendar-day" data-day="24">24</button>
+                                        <button class="calendar-day" data-day="25">25</button>
+                                        <button class="calendar-day" data-day="26">26</button>
+                                        <button class="calendar-day" data-day="27">27</button>
+                                        <button class="calendar-day" data-day="28">28</button>
+                                        <button class="calendar-day" data-day="29">29</button>
+                                        <button class="calendar-day" data-day="30">30</button>
+                                </div>
+                            </div>
+                            <div class="time-panel">
+                                <div class="time-panel-header">
+                                    <span id="selected-date-text">Monday, June 1</span>
+                                </div>
+                                <div class="time-slots-container" id="time-slots-list">
+                                    <button class="time-slot" data-time="9:00 AM">9:00 AM</button>
+                                    <button class="time-slot" data-time="10:30 AM">10:30 AM</button>
+                                    <button class="time-slot"
+                                    data-time="01:00 PM">1:00 PM</button>
+                                    <button class="time-slot" data-time="03:00 AM">3:30 PM</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="floating-meeting-card" id="meeting-card-toast">
+                        <div class="meeting-icon-container">
+                            <div class="meeting-icon-wrapper">
+                                <i class="fa-solid fa-video icon-green"></i>
+                            </div>
+                        </div>
+                        <div class="meeting-details"><span class="meeting-label">Next Meeting at</span><span class="meeting-time">10:00AM Today</span></div>
+                    </div>
+            </div>
+        </section>
+
+        <section class="features-section" id="features">
+            <div class="section-container">
+                <span class="section-badge">Features</span>
+                <h2 class="section-title">Schedule in minutes, focus on what matters</h2>
+                <p class="section-subtitle">Everthing you need to manage your availability, appointments, and client booking experiences.</p>
+
+                <div class=" features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <i class="fa-regular fa-calendar-check"></i>
+                        </div>
+                        <h3 class="feature-card-title">Simple Slot Booking</h3>
+                        <p class="feature-card-description">Clients click your link, select from your open slots, and confirm. No back-and-forth emails required.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <i class="fa-solid fa-sliders"></i>
+                        </div>
+                        <h3 class="feature-card-title">Flexible Availability</h3>
+                        <p class="feature-card-description">Define working hours, appointment durations, buffer times, and unavailable days with easy backend settings.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <i class="fa-solid fa-ban"></i>
+                        </div>
+                        <h3 class="feature-card-title">No Double Bookings</h3>
+                        <p class="feature-card-description">Our intelligent backend validates slots instantly. Once a slot is booked, it diappears autmatically</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works-section" id="how-it-works">
+            <div class="section-container">
+                <span class="section-badge">Workflow</span>
+                <h2 class="section-title">Set up in 3 simple steps</h2>
+
+                <div class="steps-grid">
+
+                    <div class="step-card">
+                        <div class="step-num">1</div>
+                        <h3 class="step-title">Create Account</h3>
+                        <p class="step-description">Register as a service provider, tutor, or frelancer, and customize your profile bio and header</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-num">2</div>
+                        <h3 class="step-title">Configure Hours</h3>
+                        <p class="step-description">Define appointments lengths(eg 15, 30, 60 minutes) and select your working days time frames.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-num">3</div>
+                        <h3 class="step-title">Share Your Link</h3>
+                        <p class="step-description">Share your personalized myAPT link in your email signature, social media profiles, or website.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="pricing-section" id="pricing">
+            <div class="section-container">
+                <span class="section-badge">Pricing</span>
+                <h2 class="section-title">Simple plans for growing creators</h2>
+                <p class="section-subtitle">Start Scheduling for free. Upgrade to unlock powerful integrations, online payments, and advanced analytics.</p>
+
+                <div class="pricing-grid">
+                    <div class="pricing card">
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-tier">Starter</h3>
+                            <span class="price-amount">₹0</span>
+                            <span class="price-period">Free forever</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fa-solid fa-circle-check"></i>1 Active Scheduling Page</li>
+                            <li><i class="fa-solid fa-circle-check"></i>Custom Booking Link</li>
+                            <li><i class="fa-solid fa-circle-check"></i>Automated email Confirmations</li>
+                            <li><i class="fa-solid fa-circle-check"></i>basic Dashboard Tracker</li>
+                        </ul>
+                        <a href="#get-started" class="btn btn-outline pricing-btn">Get Started Free</a>
+                    </div>
+
+                    <div class="pricing-card pricing-card-popular">
+                        <div class="popular-badge">Most Popular</div>
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-tier">Professional</h3>
+                            <span class="price-amount">$9</span>
+                            <span class="pricing-period">per month, billed annually</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fa-solid fa-circle-check"></i>Unlimited Scheduling Pages</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Get Payed for Bookings</li>
+                            <li><i class="fa-solid fa-circle-check"></i>SMS & Email Remainders</li>
+                            <li><i class="fa-solid fa-circle-check"></i>Advanced Analytics & Reporting</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Custom Booking Buffer Times</li>
+                        </ul>
+                        <a href="#get-started" class="btn btn-primary pricing-btn">Support</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+     </main>
+
 </body>
 </html>
