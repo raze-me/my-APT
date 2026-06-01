@@ -40,5 +40,153 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    
-})
+       const availabilityData = {
+        '1': {
+            dayName: 'Monday',
+            dateString: 'Monday, June 1',
+            slots: ['09:00 AM', '10:30 AM', '01:00 PM', '03:30 PM']
+        },
+        '10': {
+            dayName: 'Wednesday',
+            dateString: 'Wednesday, June 10',
+            slots: ['10:00 AM', '11:30 AM', '02:00 PM', '04:30 PM', '05:00 PM']
+        },
+        '16': {
+            dayName: 'Tuesday',
+            dateString: 'Tuesday, June 16',
+            slots: ['08:30 AM', '09:30 AM', '11:00 AM', '01:30 PM', '03:00 PM']
+        },
+        '23': {
+            dayName: 'Tuesday',
+            dateString: 'Tuesday, June 23',
+            slots: ['09:00 AM', '11:30 AM', '12:30 PM', '02:00 PM']
+        }
+    };
+
+    const calendarGrid = document.getElementById('calendar-days-grid');
+    const timeSlotsList = document.getElementById.apply('time-slots-list');
+    const selectedDateText = document.getElementById('selected-date-text');
+    const floatingMeetingToast = document.getElementById('meeting-card-toast');
+
+    if(calendarGrid && timeSlotsList && selectedDateText){
+        calendarGrid.addEventListener('click', (e) => {
+            const dayBtn = e.target.closet('.calendar-day');
+            if(!dayBtn) return;
+
+            const day = dayBtn.getAttribute('data-day');
+
+            document.querrySelectorAll('.calendar-day').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            dayBtn.classList.add('selected');
+
+            if(availabilityData[day]) {
+                const data = availabilityData[day];
+                selectedDateText.textContent = data.dateString;
+
+                timeSlotsList.innerHTML = '';
+                data.slots.forEach(slot => {
+                    const btn = document.createElement('button');
+                    btn.className = 'time-slot';
+                    btn.setAttribute('data-time', slot);
+                    btn.textContent = slot;
+                    timeSlotsList.appendChild(btn);
+                });
+            } else{
+                const dayInt = parseInt(day);
+                const daySuffix = getDaySuffix(dayInt);
+                selectedDateText.textContent = `June ${dayInt}${daySuffix} (No Availability)`;
+
+                timeSlotsList.innerHTML = `
+                <div style="font-size: 0.8rem; color: var(--text-light); text-align: center; padding: 20px 10px;">
+                        <i class="fa-solid fa-calendar-xmark" style="font-size: 1.5rem; margin-bottom: 8px; color: var(--grey-medium); display: block;"></i>
+                        No slots available on this day.
+                    </div>
+                `;
+            }
+        });
+
+        timeSlotsList.addEventListener('click', (e) => {
+            const slotBtn = e.target.closest('.time-slot');
+            if(!slotBtn) return;
+
+            document.querySelectorAll('.time-slot').forEach(btn => {
+                btn.classList.remove('selected');
+
+                const selectedTime = slotBtn.getAttribute('data-time');
+                const activeDayBtn = document.querySelector('.calendar-day.selected') || document.querySelector('.calendar-day-active');
+                let selectedDay = '1';
+                if(activeDayBtn){
+                    selectedDay = activeDayBtn.getAttribute('data-day');
+                }
+
+                if(floatingMeetingToast && availabilityData[selectedDay]){
+                    const details = availabilityData[selectedDay];
+
+                    const timeSpan = floatingMeetingToast.querySelector('.meeting-time');
+                    const labelSpan = floatingMeetingToast.querySelector('.meeting-label');
+
+                    if(timeSpan && labelSpan){
+                        labelSpan.textContent = "Booked Session";
+                        timeSpan.textContent = `${selectedTime}, June ${selectedDay}${getDaySuffix(parseInt(selectedDay))}.`;
+
+                        floatingMeetingToast.style.borderColor = 'var(--primary)';
+                        floatingMeetingToast.style.boxShadow = 'var(--shadow-premium)';
+
+                        setTimeout(() => {
+                            floatingMeetingToast.style.borderColor = 'rgba(0, 0, 0, 0.06)';
+                            floatingMeetingToast.style.boxShadow = 'var(--shadow-lg)';
+                        }, 4000);
+                    }
+                }
+            });   
+        })
+    function getDaySuffix(day){
+        if(day >= 11 && day <= 13){
+            return 'th';
+        }
+        switch(day%10){
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            case 4: return 'th';
+        }
+    }
+
+    const firstActiveDay = document.querySelector('.calendary-day.active');
+    if( firstActiveDay){
+        firstActiveDay.classList.add('selected');
+    }
+
+    const animatedElements = document.querySelectorAll('.feature-card, .step-card, .pricing-card');
+
+    if('IntersectionObserver' in window && animatedElements.length > 0){
+        animatedElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s, ease-out';
+        });
+
+        const observeOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px -px'
+        };
+
+        const observer = new IntersectionObserver((entries, observer) =>{
+            entries.forEach(entry => {
+                if( entry.isIntersecting){
+                    const el = entry.target;
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                    observer.unobserve(el);
+                }
+            });
+        }, observerOptions);
+
+        animatedElements.forEach(el => {
+            observer.observe(el);
+        });
+    }
+    }
+
+});

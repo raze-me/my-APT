@@ -877,7 +877,140 @@ button, input, select{
     font-size: 0.85rem;
 }
 
+@media (max-width: 1024px){
+    html{
+        font-size: 15px;
+    }
 
+    .hero-container{
+        grid-template-columns: 1fr;
+        gap: 60px;
+        text-align: center;
+    }
+
+    .hero-left{
+        align-items: center;
+    }
+
+    .hero-card{
+        padding: 32px;
+        max-width: 650px;
+    }
+    
+    .hero-actions{
+        justify-content: center;
+    }
+
+    .floating-meeting-card{
+        left: 0;
+    }
+
+    .features-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps-grid{
+        grid-template-columns: repeat(1, 1fr);
+        gap: 20px;
+    }
+
+    .step-card{
+        padding: 16px 0;
+    }
+
+    .pricing-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .footer-container{
+        grid-template-columns: 1fr repeat(3, 1fr);
+        gap: 32px;
+    }
+}
+
+
+@media (max-width: 768px){
+    .navbar{
+        height: 60px;
+    }
+
+    .mobile-toggle{
+        display: block;
+    }
+
+    .nav-menu{
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--bg-secondary);
+        display: none;
+        padding: 40px 24px;
+        border-top: 1px solid var(--border-color);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .nav-menu.open{
+        display: block;
+    }
+
+    .nav-list{
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        gap: 24px;
+    }
+
+    .nav-link{
+        font-size: 1.15rem;
+    }
+
+    .nav-actions{
+        display: none;
+    }
+
+    .nav-menu.open + .nav-actions{
+        display: flex;
+        position: fixed;
+        bottom: 40px;
+        left: 24px;
+        right: 24px;
+        flex-direction: column;
+        z-index: 1001;
+    }
+
+    .nav-menu.open + .nav-actions .btn{
+        width: 100%;
+    }
+
+    .hero{
+        padding-top: 100px;
+        padding-bottom: 60px;
+    }
+
+    .hero-title{
+        font-size: 2.25rem;
+    }
+
+    .scheduler-body{
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-panel{
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .feature-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .footer-container{
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}
 
 
 
