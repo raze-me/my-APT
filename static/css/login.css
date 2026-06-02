@@ -108,4 +108,135 @@
     line-height: 1.4;
 }
 
+.login-card-panel{
+    padding: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.login-card{
+    width: 100%;
+    max-width: 380px;
+}
+
+.card-brand{
+    margin-bottom: 32px;
+}
+
+.card-header{
+    margin-bottom: 36px;
+}
+
+.card-header h2{
+    font-size: 2rem;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+}
+
+.card-header p{
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.auth-action-container{
+    margin-bottom: 24px;
+}
+
+.google-signin-btn{
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content:  center;
+    gap: 12px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-medium);
+}
+
+.google-signin-btn:hover{
+    background-color: var(--grey-light);
+    border-color: var(--grey-medium);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.google-logo{
+    display: block;
+}
+
+.auth-status-container{
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.status-message{
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.status-message.loading{
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.status-message.success{
+    color: #059669;
+    font-weight: 500;
+}
+
+.status-message.error{
+    color: #e11d48;
+    font-weight: 1px solid var(--border-color);
+}
+
+.card-footer{
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+}
+
+.card-footer p{
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+.card-footer a{
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.card-footer a:hover{
+    text-decoration: underline;
+}
+
+@media (max-width: 900px){
+    .login-continer{
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+
+    .login-info-panel{
+        display: none;
+    }
+
+    .login-card-panel{
+        padding: 40px 24px;
+    }
+
+    .back-home-link{
+        top: 16px;
+        left: 16px;
+    }
+}

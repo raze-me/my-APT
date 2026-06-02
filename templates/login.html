@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - myAPT Scheduling</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    
+    <script src="{{ url_for('static', filename='js/auth.js') }}" defer></script>
+    
 </head>
 <body>
     
@@ -65,7 +80,33 @@
             </div>
         </div>
 
-        
+        <div class="login-card-panel">
+            <div class="lgin-card">
+                <div class="card-brand">
+                    <span class="logo-text">my<span class="logo-accent">APT</span></span>
+                </div>
+
+                <div class="card-header">
+                    <h2>Welcome to myAPT</h2>
+                    <p>Create scheduling pages and start booking clients in seconds</p>
+                </div>
+
+                <div class="auth-action-container">
+                    <button class="google-signin-btn" id="google-login-btn">
+                        <!-- image of google here -->
+                        <span>Sign in with Google</span>
+                    </button>
+                </div>
+
+                <div class="auth-status-container" id="auth-status-box">
+                    <p class="status-message" id="auth-status-msg">Click above to sign in using Google Auth.</p>
+                </div>
+
+                <div class="card-footer">
+                    <p>By signing in, you agree to our <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a></p>
+                </div>
+            </div>
+        </div>
     </div>
 
 </body>
