@@ -135,9 +135,9 @@ button, input, select{
     color: var(--bg-secondry);
 }
 
-.btn-primary:hover:{
+.btn-primary:hover{
     background-color: var(--dark-blue-hover);
-    transfor: translateY(-2px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
 
