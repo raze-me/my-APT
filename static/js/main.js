@@ -3,12 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const menuToggle = document.getElementById('menu-toggle-btn');
     const navMenu = document.getElementById('navigation-menu');
-    const header = document.getElementById('.navbar');
+    const header = document.querySelector('.navbar');
 
     if( menuToggle && navMenu) {
         menuToggle.addEventListener('click', () =>{
-
             navMenu.classList.toggle('open');
+            const icon = menuToggle.querySelector('i');
             if(icon){
                 if( navMenu.classList.contains('open')) {
                     icon.className = 'fa-solid fa-xmark';
@@ -19,24 +19,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const navLinks = document.querrySelectorAll('.nav-link');
+    const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             if(navMenu && navMenu.classList.contains('open')){
                 navMenu.classList.remove('open');
-                const icon = menuToggle.querrySelector('i');
+                const icon = menuToggle.querySelector('i');
                 if(icon) icon.className = 'fa-solid fa-bars';
             }
         });
     });
 
-    window.addElementById('scroll', () => {
-        if(window.scrollY > 20){
-            header.style.boxShadow = 'var(--shadow-md)';
-            header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-        }else{
-            header.style.boxShadow = 'var(--shadow-sm)';
-            header.style.backgroundColor = 'var(--bg-glass)';
+    window.addEventListener('scroll', () => {
+        if(header){
+            if(window.scrollY > 20){
+                header.style.boxShadow = 'var(--shadow-md)';
+                header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+            }else{
+                header.style.boxShadow = 'var(--shadow-sm)';
+                header.style.backgroundColor = 'var(--bg-glass)';
+            }
         }
     });
 
@@ -64,18 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const calendarGrid = document.getElementById('calendar-days-grid');
-    const timeSlotsList = document.getElementById.apply('time-slots-list');
+    const timeSlotsList = document.getElementById('time-slots-list');
     const selectedDateText = document.getElementById('selected-date-text');
     const floatingMeetingToast = document.getElementById('meeting-card-toast');
 
     if(calendarGrid && timeSlotsList && selectedDateText){
         calendarGrid.addEventListener('click', (e) => {
-            const dayBtn = e.target.closet('.calendar-day');
+            const dayBtn = e.target.closest('.calendar-day');
             if(!dayBtn) return;
 
             const day = dayBtn.getAttribute('data-day');
 
-            document.querrySelectorAll('.calendar-day').forEach(btn => {
+            document.querySelectorAll('.calendar-day').forEach(btn => {
                 btn.classList.remove('selected');
             });
             dayBtn.classList.add('selected');
@@ -112,51 +114,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.querySelectorAll('.time-slot').forEach(btn => {
                 btn.classList.remove('selected');
+            });
+            slotBtn.classList.add('selected');
 
-                const selectedTime = slotBtn.getAttribute('data-time');
-                const activeDayBtn = document.querySelector('.calendar-day.selected') || document.querySelector('.calendar-day-active');
-                let selectedDay = '1';
-                if(activeDayBtn){
-                    selectedDay = activeDayBtn.getAttribute('data-day');
+            const selectedTime = slotBtn.getAttribute('data-time');
+            const activeDayBtn = document.querySelector('.calendar-day.selected') || document.querySelector('.calendar-day.active');
+            let selectedDay = '1';
+            if(activeDayBtn){
+                selectedDay = activeDayBtn.getAttribute('data-day');
+            }
+
+            if(floatingMeetingToast && availabilityData[selectedDay]){
+                const details = availabilityData[selectedDay];
+
+                const timeSpan = floatingMeetingToast.querySelector('.meeting-time');
+                const labelSpan = floatingMeetingToast.querySelector('.meeting-label');
+
+                if(timeSpan && labelSpan){
+                    labelSpan.textContent = "Booked Session";
+                    timeSpan.textContent = `${selectedTime}, June ${selectedDay}${getDaySuffix(parseInt(selectedDay))}.`;
+
+                    floatingMeetingToast.style.borderColor = 'var(--primary)';
+                    floatingMeetingToast.style.boxShadow = 'var(--shadow-premium)';
+
+                    setTimeout(() => {
+                        floatingMeetingToast.style.borderColor = 'rgba(0, 0, 0, 0.06)';
+                        floatingMeetingToast.style.boxShadow = 'var(--shadow-lg)';
+                    }, 4000);
                 }
+            }
+        });
 
-                if(floatingMeetingToast && availabilityData[selectedDay]){
-                    const details = availabilityData[selectedDay];
-
-                    const timeSpan = floatingMeetingToast.querySelector('.meeting-time');
-                    const labelSpan = floatingMeetingToast.querySelector('.meeting-label');
-
-                    if(timeSpan && labelSpan){
-                        labelSpan.textContent = "Booked Session";
-                        timeSpan.textContent = `${selectedTime}, June ${selectedDay}${getDaySuffix(parseInt(selectedDay))}.`;
-
-                        floatingMeetingToast.style.borderColor = 'var(--primary)';
-                        floatingMeetingToast.style.boxShadow = 'var(--shadow-premium)';
-
-                        setTimeout(() => {
-                            floatingMeetingToast.style.borderColor = 'rgba(0, 0, 0, 0.06)';
-                            floatingMeetingToast.style.boxShadow = 'var(--shadow-lg)';
-                        }, 4000);
-                    }
-                }
-            });   
-        })
-    function getDaySuffix(day){
-        if(day >= 11 && day <= 13){
-            return 'th';
+        function getDaySuffix(day){
+            if(day >= 11 && day <= 13){
+                return 'th';
+            }
+            switch(day%10){
+                case 1: return 'st';
+                case 2: return 'nd';
+                case 3: return 'rd';
+                default: return 'th';
+            }
         }
-        switch(day%10){
-            case 1: return 'st';
-            case 2: return 'nd';
-            case 3: return 'rd';
-            case 4: return 'th';
-        }
-    }
 
-    const firstActiveDay = document.querySelector('.calendary-day.active');
-    if( firstActiveDay){
-        firstActiveDay.classList.add('selected');
-    }
+        const firstActiveDay = document.querySelector('.calendar-day.active');
+        if( firstActiveDay){
+            firstActiveDay.classList.add('selected');
+        }
 
     const animatedElements = document.querySelectorAll('.feature-card, .step-card, .pricing-card');
 
@@ -169,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const observeOptions = {
             threshold: 0.15,
-            rootMargin: '0px 0px -50px -px'
+            rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries, observer) =>{
@@ -181,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     observer.unobserve(el);
                 }
             });
-        }, observerOptions);
+        }, observeOptions);
 
         animatedElements.forEach(el => {
             observer.observe(el);
@@ -189,4 +193,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     }
 
+    // Check auth state for navbar updates
+    const updateNavbarAuth = () => {
+        const navActions = document.getElementById('navigation-actions');
+        if(!navActions) return;
+
+        const savedUser = localStorage.getItem('myapt_user');
+        if(savedUser){
+            try{
+                const user = JSON.parse(savedUser);
+                const name = user.displayName || user.email.split('@')[0];
+                navActions.innerHTML = `
+                    <span class="user-greeting" style="font-weight: 600; font-size: 0.95rem; color: var(--text-main); display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-circle-user" style="color: var(--primary); font-size: 1.25rem;"></i>
+                        Hi, <strong>${name}</strong>
+                    </span>
+                    <button id="logout-btn" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem; margin-left: 8px;">Logout</button>
+                `;
+
+                const logoutBtn = document.getElementById('logout-btn');
+                if(logoutBtn){
+                    logoutBtn.addEventListener('click', () => {
+                        localStorage.removeItem('myapt_user');
+                        window.location.reload();
+                    });
+                }
+            } catch(e) {
+                console.error("Error parsing user from localStorage:", e);
+            }
+        }
+    };
+
+    updateNavbarAuth();
 });

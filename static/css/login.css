@@ -26,7 +26,7 @@
     transform: translateX(-2px);
 }
 
-.back-container{
+.login-container{
     max-width: 1000px;
     width: 100%;
     background-color: var(--bg-secondary);
@@ -39,7 +39,7 @@
     min-height: 640px;
 }
 
-.logo-info-panel{
+.login-info-panel{
     background: linear-gradient(125deg, #cbd5e1 0%, #94a3b8 100%);
     padding: 60px;
     display: flex;
@@ -65,10 +65,19 @@
     margin-bottom: 20px;
 }
 
-.logo-info-panel .info-subtitle{
+.login-info-panel .info-title{
     font-size: 2.5rem;
-    color: #334155;
+    color: var(--dark-blue);
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 16px;
+}
+
+.login-info-panel .info-subtitle{
+    font-size: 1.1rem;
+    color: #475569;
     margin-bottom: 40px;
+    line-height: 1.6;
 }
 
 .problems-list{
@@ -222,7 +231,7 @@
 }
 
 @media (max-width: 900px){
-    .login-continer{
+    .login-container{
         grid-template-columns: 1fr;
         max-width: 500px;
     }

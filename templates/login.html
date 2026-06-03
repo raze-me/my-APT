@@ -17,10 +17,21 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     
-    <script src="{{ url_for('static', filename='js/auth.js') }}" defer></script>
+    <script>
+        window.firebaseConfig = {
+            apiKey: "{{ firebase_config.apiKey }}",
+            authDomain: "{{ firebase_config.authDomain }}",
+            projectId: "{{ firebase_config.projectId }}",
+            storageBucket: "{{ firebase_config.storageBucket }}",
+            messagingSenderId: "{{ firebase_config.messagingSenderId }}",
+            appId: "{{ firebase_config.appId }}",
+            measurementId: "{{ firebase_config.measurementId }}"
+        };
+    </script>
+    <script src="{{ url_for('static', filename='js/auth.js') }}?v=2" defer></script>
     
 </head>
-<body>
+<body class="login-body">
     
     <a href="{{url_for('index')}}" class="back-home-link"> 
         <i class="fa-solid fa-arrow-left"></i> Back to Home
@@ -81,7 +92,7 @@
         </div>
 
         <div class="login-card-panel">
-            <div class="lgin-card">
+            <div class="login-card">
                 <div class="card-brand">
                     <span class="logo-text">my<span class="logo-accent">APT</span></span>
                 </div>
@@ -93,7 +104,7 @@
 
                 <div class="auth-action-container">
                     <button class="google-signin-btn" id="google-login-btn">
-                        <!-- image of google here -->
+                        <i class="fa-brands fa-google" style="color: #4285F4; font-size: 1.1rem;"></i>
                         <span>Sign in with Google</span>
                     </button>
                 </div>

@@ -16,7 +16,7 @@
     <header class="navbar">
         <div class="navbar-container">
             <a href="#" class="logo" id="logo-brand">
-                <span class="logo-text">my</span>
+                <span class="logo-text">my<span class="logo-accent">APT</span></span>
             </a>
 
             <button class="mobile-toggle" id="menu-toggle-btn" aria-label="Toggle Navigation Menu">
@@ -25,15 +25,15 @@
 
             <nav class="nav-menu" id="navigation-menu">
                 <ul class="nav-list">
-                    <li class="mav-item"><a href="#features" class="nav-link">Features</a></li>
-                    <li class="nav-item"><a href="#how-it-works">How it Works</a></li>
-                    <li class="nav-item"><a href="#pricing">Pricing</a></li>
+                    <li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+                    <li class="nav-item"><a href="#how-it-works" class="nav-link">How it Works</a></li>
+                    <!-- <li class="nav-item"><a href="#pricing">Pricing</a></li> -->
                 </ul>
             </nav>
 
             <div class="nav-actions" id="navigation-actions">
-                <a href="#login" class="login-link">Login</a>
-                <a href="#get-started" class="btn btn-primary btn-sm">Get Started</a>
+                <a href="/login" class="login-link">Login</a>
+                <a href="/login" class="btn btn-primary btn-sm">Get Started</a>
             </div>
         </div>
     </header>
@@ -49,10 +49,10 @@
                         <h1 class="hero-title">Book smarter.<br><span class="gradient-text">Schedule faster.</span></h1>
                         <p class="hero-description">myAPT is a lightweight, customizable booking platform that helps freelancers, tutors. consultants, and professional automate their appointments. Set your hours, share your hours. share your links, and let client schedule in seconds</p>
                         <div class="hero-actions">
-                            <a href="#get=started" class="btn btn-primary" id="cta-get-started">
+                            <a href="/login" class="btn btn-primary" id="cta-get-started">
                                 Get Started Now <i class="fa-solid fa-arrow-right icon-right"></i>
                             </a>
-                            <a href=":#watch-demo" class="btn btn-secondary" id="cta-watch-demo">
+                            <a href="#watch-demo" class="btn btn-secondary" id="cta-watch-demo">
                                 <i class="fa-solid fa-play icon-left"></i> Watch Demo!
                             </a>
                         </div>
@@ -71,7 +71,7 @@
                                         <span class="status-indicator"></span>
                                     </div>
                                     <div class="host-info">
-                                        <h3 class="host-name">Sujal Negi</h3>
+                                        <h3 class="host-name">Sanskar</h3>
                                         <p class="host-title">Consultant & Frontend Architect</p>
                                     </div>
                                 </div>
@@ -85,9 +85,9 @@
                                         <span class="calendar-month-year">June 2026</span>
                                         <button class="calendar-nav-btn" disabled><i class="fa-solid fa-chevron-right"></i></button>
                                     </div>
-                                    <div class="calendar-weekdays"
-                                    <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-                                </div>
+                                    <div class="calendar-weekdays">
+                                        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                                    </div>
                                 <div class="calendar-days" id="calendar-days-grid">
                                     <span class="day-empty"></span><span class="day-empty"></span>
                                     <button class="calendar-day active" data-day="1">1</button>
@@ -207,60 +207,20 @@
             </div>
         </section>
 
-        <section class="pricing-section" id="pricing">
-            <div class="section-container">
-                <span class="section-badge">Pricing</span>
-                <h2 class="section-title">Simple plans for growing creators</h2>
-                <p class="section-subtitle">Start Scheduling for free. Upgrade to unlock powerful integrations, online payments, and advanced analytics.</p>
-
-                <div class="pricing-grid">
-                    <div class="pricing card">
-                        <div class="pricing-card-header">
-                            <h3 class="pricing-tier">Starter</h3>
-                            <span class="price-amount">₹0</span>
-                            <span class="price-period">Free forever</span>
-                        </div>
-                        <ul class="pricing-features">
-                            <li><i class="fa-solid fa-circle-check"></i>1 Active Scheduling Page</li>
-                            <li><i class="fa-solid fa-circle-check"></i>Custom Booking Link</li>
-                            <li><i class="fa-solid fa-circle-check"></i>Automated email Confirmations</li>
-                            <li><i class="fa-solid fa-circle-check"></i>basic Dashboard Tracker</li>
-                        </ul>
-                        <a href="#get-started" class="btn btn-outline pricing-btn">Get Started Free</a>
-                    </div>
-
-                    <div class="pricing-card pricing-card-popular">
-                        <div class="popular-badge">Most Popular</div>
-                        <div class="pricing-card-header">
-                            <h3 class="pricing-tier">Professional</h3>
-                            <span class="price-amount">$9</span>
-                            <span class="pricing-period">per month, billed annually</span>
-                        </div>
-                        <ul class="pricing-features">
-                            <li><i class="fa-solid fa-circle-check"></i>Unlimited Scheduling Pages</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Get Payed for Bookings</li>
-                            <li><i class="fa-solid fa-circle-check"></i>SMS & Email Remainders</li>
-                            <li><i class="fa-solid fa-circle-check"></i>Advanced Analytics & Reporting</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Custom Booking Buffer Times</li>
-                        </ul>
-                        <a href="#get-started" class="btn btn-primary pricing-btn">Support</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        
      </main>
 
      <footer class="footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <spanc class="logo-text">my<span class="APT"></span></span>
+                <span class="logo-text">my<span class="logo-accent">APT</span></span>
                 <p class="footer-tagline">Simplifying appointments, one click at a time.</p>
             </div>
             <div class="footer-links">
                 <div class="links-column">
                     <h4>Product</h4>
                     <a href="#features">Features</a>
-                    <a href="#pricing">Pricing</a>
+                    
                     <a href="#integrations">Integration</a>
                 </div>
                 
