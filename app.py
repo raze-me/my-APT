@@ -1,9 +1,33 @@
 from flask import Flask, render_template
 import os
+import firebase_admin
+from firebase_admin import credentials
 
 app = Flask(__name__)
 
-# Lightweight helper to load .env manually
+firebase_initialized = False
+
+try:
+    if not firebase_admin._apps:
+        ket_path = os.path.join(os.path.dirname(__file__), "serviceAccountKey.json")
+        if os.path.exists(key_path):
+            cred = credentials.Certificate(key_path)
+            firebase_admin.initialize_app(cred)
+            firebase_initialized = True
+            print(">>> Firebase Admin initialized successfully using serviceAccountKey.json.")
+        else:
+            print(">>> WARNING: serviceAccountKey.json not found in project root. Firebase Admin features will fail.")
+
+            try:
+                firebase_admin.intialize_app()
+                firebase_initialized = True
+                print(">>> Firebase Admin initialized using Default Credentials.")
+            except Exception:
+                print(">>> Firebase Admin initialization skipped. Authentication and Firestore function will require credentials.")
+except Exception as e:
+    print(f">>> Failed to initialize Firebase Admin SDK: {e}")
+
+ 
 def load_env():
     if os.path.exists('.env'):
         with open('.env') as f:
