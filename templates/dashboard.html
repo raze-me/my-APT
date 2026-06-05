@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - myAPT</title>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
+
+</head>
+<body class="dashboard-body">
+
+    <header class="dashboard-nav">
+        <div class="nav-container">
+            <a href="#" class="dashboard-logo">
+                <span>my<span class="logo-accent">APT</span></span>
+            </a>
+            <div class="nav-user-actions">
+                <span class="user-greeting" id="user-display-email">Loading user...</span>
+                <button class="btn btn-outline btn-sm" id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="header-header">
+            <div class="header-text">
+                <h1 class="page-title">My Booking Pages</h1>
+                <p class="page-subtitle">Manage availability links, meeting durations, and check your active booking schedulers.</p>
+            </div> 
+            <div class="header-actions">
+                <a href="{{url_for('create_scheduler')}}" class="btn btn-primary">
+                    <i class="fa-solid fa-plus icon-left"></i> Create Scheduler
+                </a>
+            </div>
+        </div>
+
+        <div id="dashboard-error" class="form-error-box" style="display: none; margin-bottom: 24px;"></div>
+
+        <div id="loading-indicator" class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading your booking configurations...</p>
+        </div>
+
+        <div class="empty-state" id="empty-state" style="display: none;">
+            <div class="empty-icon-box">
+                <i class="fa-regular fa-calendar-plus"></i>
+            </div>
+            <h2>No Booking Pages yet</h2>
+            <p> You havent configured any scheduling page availability. Create your firest scheduler link to start letting clients book slots directly</p>
+            <a href="{{ url_for('create_scheduler')}}" class="btn btn-primary">Create First Scheduler <i class="fa-solid fa-arrow-right icon-right"</a>
+        </div>
+
+    </main>
+     
+</body>
+</html>

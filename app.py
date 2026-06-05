@@ -57,5 +57,13 @@ def login():
     }
     return render_template('login.html', firebase_config=firebase_config)
 
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/create-scheduler')
+def create_scheduler():
+    return render_template('create_scheduler.html')
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
