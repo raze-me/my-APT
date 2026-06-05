@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Scheduler - myAPT</title>
+</head>
+<body class="dashboard-body">
+
+    <header class="dashboard-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('dashboard')}}" class="dashboard-logo">
+                <span>my<span class="logo-accent">APT</span></span>
+            </a>
+            <div class="nav-user-actions">
+                <a href="{{url_for('dashboard')}}" class="btn-text"><i class="fa-solid fa-house"></i>Dashboard</a>
+                <button class="btn btn-outline btn-sm" id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-main">
+            <div class="content-header">
+                <h1 class="page-title">New Booking Page</h1>
+                <p class="page-subtitle">Configure your available days, times, and meeting parameters.</p>
+            </div>
+
+            <div class="form-container-card">
+                <form id="scheduler-form" class="scheduler-form">
+                    <div class="form-grid">
+
+                        <div class="form-group full-width">
+                            <label for="title">Page Title / Meeting Name</label>
+                            <input type="text" id="title" placeholder="e.g. 15-Minute Intro Consultation" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="startDate">Active Start Date</label>
+                            <input type="date" id="startDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endDate">Active End Date</label>
+                            <input type="date" id="endDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="startTime">Daily Start Time</label>
+                            <input type="time" id="startTime" value="09:00" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="slotDuration">Meeting Duration</label>
+                            <select id="slotDuration" required>
+                                <option value="15" selected>15 Minutes</option>
+                                <option value="30">30 Minutes</option>
+                                <option value="45">45 Minutes</option>
+                                <option value="60">60 Minutes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="form-error-msg" class="form-error-box" style="display: none;"></div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="submit-btn">
+                            Create Page <i class="fa-solid fa-plus icon-right"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <div id="success-box" class="success-box" style="display: none;">
+                    <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <h3>Your Booking Page in Live!</h3>
+                    <p>Share this public link with your clients to start accepting bookings.</p>
+                </div>
+
+                <div class="link-display-box">
+                    <input type="text" id="public-link-url" readonly>
+                    <button class="btn btn-primary btn-sm" id="copy-btn">
+                        <i class="fa-regular fa-copy"></i><span>Copy</span>
+                    </button>
+                </div>
+
+                <div class="success-footer">
+                    <a href="{{url_for('dashboard')}}" class="btn btn-secondary btn-sm">Go to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+
+</body>
+</html>
