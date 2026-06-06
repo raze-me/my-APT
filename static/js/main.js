@@ -193,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     }
 
-    // Check auth state for navbar updates
     const updateNavbarAuth = () => {
         const navActions = document.getElementById('navigation-actions');
         if(!navActions) return;

@@ -1,36 +1,41 @@
-
-
 document.documentElement.style.display = 'none';
 
 document.addEventListener('DOMContentLoaded', () => {
     let retries = 0;
     const maxRetries = 40;
 
-    const chcekAuthernticationState = () => {
-        if(typeof firebase !== 'undefined' && firebase.auth) {
+    const checkAuthenticationState = () => {
+        const savedUser = localStorage.getItem('myapt_user');
+
+        if(typeof firebase !== 'undefined' && firebase.auth && firebase.apps && firebase.apps.length > 0) {
             firebase.auth().onAuthStateChanged((user) => {
-                if ( user){
+                if (user || savedUser) {
                     document.documentElement.style.display = '';
-                }   else{
+                } else {
                     console.log("No user session active, redirecting to login page...");
                     window.location.href = '/login';
                 }
             });
-        }   else{
+        } else {
+            if (savedUser) {
+                document.documentElement.style.display = '';
+                return;
+            }
+
             retries++;
             if(retries < maxRetries){
-                setTimeout(chcekAuthernticationState, 50);
-            }   else{
-
+                setTimeout(checkAuthenticationState, 50);
+            } else {
                 document.documentElement.style.display = '';
                 document.body.innerHTML = `
-                <div style="font-family: sans-serif; text-align: center; padding: 40px; color: #311d48;">
-                    <h2>Authentication libraries could not be loaded. Please ensure you have an active internet connection and check console logs.</p>
+                <div style="font-family: sans-serif; text-align: center; padding: 40px; color: #be123c;">
+                    <h2>Authentication SDK Not Loaded</h2>
+                    <p>Please check your internet connection or configure Firebase.</p>
                 </div>
                 `;
             }
         }
     };
 
-    chcekAuthernticationState();
-})
+    checkAuthenticationState();
+});

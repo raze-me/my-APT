@@ -2,14 +2,16 @@ from flask import Flask, render_template
 import os
 import firebase_admin
 from firebase_admin import credentials
+from routes.scheduler_routes import scheduler_bp
 
 app = Flask(__name__)
+app.register_blueprint(scheduler_bp, url_prefix='/api/scheduler')
 
 firebase_initialized = False
 
 try:
     if not firebase_admin._apps:
-        ket_path = os.path.join(os.path.dirname(__file__), "serviceAccountKey.json")
+        key_path = os.path.join(os.path.dirname(__file__), "serviceAccountKey.json")
         if os.path.exists(key_path):
             cred = credentials.Certificate(key_path)
             firebase_admin.initialize_app(cred)
@@ -19,7 +21,7 @@ try:
             print(">>> WARNING: serviceAccountKey.json not found in project root. Firebase Admin features will fail.")
 
             try:
-                firebase_admin.intialize_app()
+                firebase_admin.initialize_app()
                 firebase_initialized = True
                 print(">>> Firebase Admin initialized using Default Credentials.")
             except Exception:
@@ -39,6 +41,12 @@ def load_env():
                         os.environ[key.strip()] = val.strip()
 
 load_env()
+
+from routes.scheduler_routes import scheduler_bp
+from routes.booking_routes import booking_bp
+
+app.register_blueprint(scheduler_bp, url_prefix = '/api/scheduler')
+app.register_blueprint(booking_bp, url_prefix='/api/booking')
 
 @app.route('/')
 def index():
@@ -63,7 +71,7 @@ def dashboard():
 
 @app.route('/create-scheduler')
 def create_scheduler():
-    return render_template('create_scheduler.html')
+    return render_template('create-scheduler.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

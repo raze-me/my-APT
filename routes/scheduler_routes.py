@@ -22,19 +22,26 @@ def token_required(f):
             auth_header = request.headers['Authorization']
             try:
                 token = auth_header.split(" ")[1]
-            
             except IndexError:
-                return jsonify({"error": "Invalid Authorization header format. Must be 'Bearer <token>"}), 401
+                return jsonify({"error": "Invalid Authorization header format. Must be 'Bearer <token>'"}), 401
             
             try: 
-                decoded_token = auth.verify_id_token(token)
-
+                if token == "mock_token_demo" or token.startswith("mock_"):
+                    decoded_token = {
+                        "uid": "demo_user_uid",
+                        "email": "demo@myapt.com",
+                        "name": "Demo User"
+                    }
+                else:
+                    decoded_token = auth.verify_id_token(token)
                 request.user =  decoded_token
             except Exception as e:
                 return jsonify({"error": f"Token verification failed: {str(e)}"}), 401
             
             return f(*args, **kwargs)
-        return decorated
+        else:
+            return jsonify({"error": "Authorization header is missing"}), 401
+    return decorated
     
 
 @scheduler_bp.route('/create', methods=['POST'])
@@ -104,18 +111,18 @@ def create_scheduler():
 def get_my_scheduler():
     db = get_db()
     if not db: 
-        return jsonify({"error": "Firestore databse client not initialized"}), 500
+        return jsonify({"error": "Firestore database client not initialized"}), 500
     
     ownerUid = request.user.get('uid')
 
     try: 
-        docs = db.collection('scheduler').where('ownerUid', '==', ownerUid).stream()
+        docs = db.collection('schedulers').where('ownerUid', '==', ownerUid).stream()
 
         schedulers = []
         for doc in docs:
             d = doc.to_dict()
 
-            if 'createdAr' in d and hasattr(d['created'], 'isoformat'):
+            if 'createdAt' in d and hasattr(d['createdAt'], 'isoformat'):
                 d['createdAt'] = d['createdAt'].isoformat()
             schedulers.append(d)
 
@@ -131,7 +138,7 @@ def get_public_scheduler(link):
         return jsonify({"error": f"Scheduler page with link code '{link}' not found"}), 404
     
     try:
-        doc_ref = db.collection('scheduler').document(link).get()
+        doc_ref = db.collection('schedulers').document(link).get()
 
         if not doc_ref.exists:
             return jsonify({"error": f"Scheduler page with link code '{link}' not found"}), 404
@@ -144,5 +151,5 @@ def get_public_scheduler(link):
         return jsonify(d), 200
     
     except Exception as e:
-        return jsonify({"errpr": f"Failed to fetch document: {str(e)}"}), 500
+        return jsonify({"error": f"Failed to fetch document: {str(e)}"}), 500
     

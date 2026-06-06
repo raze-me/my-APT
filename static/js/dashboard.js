@@ -1,5 +1,4 @@
-
-document.addEvenetListner('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const cardsGrid = document.getElementById('scheduler-cards-grid');
     const loadingIndicator = document.getElementById('loading-indicator');
     const emptyState = document.getElementById('empty-state');
@@ -7,8 +6,17 @@ document.addEvenetListner('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
     const userGreeting = document.getElementById('user-display-email');
 
+    const savedUser = localStorage.getItem('myapt_user');
+    if (savedUser && userGreeting) {
+        try {
+            const parsedUser = JSON.parse(savedUser);
+            userGreeting.textContent = parsedUser.email || parsedUser.displayName || "Active Host";
+        } catch (e) {
+            console.error("Error loading user profile details: ", e);
+        }
+    }
 
-    if(typeof firebase !== 'undefined' && firebase.auth){
+    if(typeof firebase !== 'undefined' && firebase.auth && firebase.apps && firebase.apps.length > 0){
         firebase.auth().onAuthStateChanged(user => {
             if( user && userGreeting) {
                 userGreeting.textContent = user.email || user.displayName || "Active Host";
@@ -17,7 +25,6 @@ document.addEvenetListner('DOMContentLoaded', () => {
     }
 
     async function loadDashboardSchedulers(){
-
         if(loadingIndicator) loadingIndicator.style.display = 'flex';
         if(cardsGrid) cardsGrid.style.display = 'none';
         if(emptyState) emptyState.style.display = 'none';
@@ -27,7 +34,6 @@ document.addEvenetListner('DOMContentLoaded', () => {
         }
 
         try{
-
             const schedulers = await api.fetchWithAuth('/api/scheduler/my');
             console.log("Fetched user schedulers list:", schedulers);
 
@@ -56,13 +62,13 @@ document.addEvenetListner('DOMContentLoaded', () => {
 
             if(errorBox){ 
                 errorBox.style.display = 'block';
-                errorBox.textContent = error.message || "Failed to load scheduling pages. Please refresh and try again";
+                errorBox.textContent = error.message || "Failed to load scheduling pages. Please refresh and try again.";
             }
         }
     } 
 
     function createSchedulerCard(scheduler) {
-        const publicBookingUrl = `${window.location.protocol}//${window.loacation.host}/book.html?link=${scheduler.publicLink}`;
+        const publicBookingUrl = `${window.location.protocol}//${window.location.host}/book.html?link=${scheduler.publicLink}`; // Fixed loacation typo
 
         const formatTime = (timeStr) => {
             if(!timeStr) return '';
@@ -90,25 +96,25 @@ document.addEvenetListner('DOMContentLoaded', () => {
             </div>
         </div>
         
-        <div class="card-link-box">
+        <div class="card-link-box" style="margin-top: auto; padding-top: 16px;">
             <span class="link-label">Booking URL</span>
             <div class="link-action-row">
                 <a href="${publicBookingUrl}" target="_blank" class="booking-link" title="Open booking page in new tab">
                     ${scheduler.publicLink} <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </a>
-                <button class="btn btn-outline btn-sm card-copy-btn" data-links="${publicBookingUrl}">
+                <button class="btn btn-outline btn-sm card-copy-btn" data-link="${publicBookingUrl}">
                     <i class="fa-regular fa-copy"></i>
                 </button>
             </div>
-        </div
-        `;
+        </div>
+        `; 
         return card;
     }
 
     function escapeHTML(str){
         return str.replace(/[&<>'"]/g,
             tag =>({
-                '&': '$amp;',
+                '&': '&amp;',
                 '<': '&lt;',
                 '>': '&gt;',
                 "'": '&#39;',
@@ -117,20 +123,25 @@ document.addEvenetListner('DOMContentLoaded', () => {
         );
     }
 
-    function bindCardCopyButton(){
+    function bindCardCopyButtons(){ 
         const copyBtns = document.querySelectorAll('.card-copy-btn');
         copyBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const link = btn.getAttribute('data-link');
+                const link = btn.getAttribute('data-link'); 
                 navigator.clipboard.writeText(link)
                 .then(() =>{
                     const originalHtml = btn.innerHTML;
                     btn.innerHTML = `<i class="fa-solid fa-check" style="color: #059669;"></i>`;
                     btn.classList.add('btn-success-light');
-                }, 2000);
-            })
-            .catch(err =>{
-                console.error("Copy failed: ", err);
+
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                        btn.classList.remove('btn-success-light');
+                    }, 2000); 
+                })
+                .catch(err =>{
+                    console.error("Copy failed: ", err);
+                });
             });
         });
     }
@@ -138,17 +149,22 @@ document.addEvenetListner('DOMContentLoaded', () => {
     if(logoutBtn){
         logoutBtn.addEventListener('click', () =>{
             if (confirm("Are you sure you want to log out?")) {
-                firebase.auth().signOut()
-                .then(() => {
+                localStorage.removeItem('myapt_user');
+                if (typeof firebase !== 'undefined' && firebase.auth && firebase.apps && firebase.apps.length > 0) {
+                    firebase.auth().signOut()
+                    .then(() => {
+                        window.location.href = '/login';
+                    })
+                    .catch(err => {
+                        console.error("Logout failed:", err);
+                        window.location.href = '/login';
+                    });
+                } else {
                     window.location.href = '/login';
-                })
-                .catch(err => {
-                    console.error("Logout failed:", err);
-                });
+                }
             }
         });
     }
 
     loadDashboardSchedulers();
-
 });

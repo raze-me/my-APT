@@ -1,9 +1,7 @@
-
-
 document.addEventListener('DOMContentLoaded', () => {
 
     const form = document.getElementById('scheduler-form');
-    const submitBtn = document.getElementById('submit-Btn');
+    const submitBtn = document.getElementById('submit-btn'); 
     const errorBox = document.getElementById('form-error-msg');
     const successBox = document.getElementById('success-box');
     const publicLinkInput = document.getElementById('public-link-url');
@@ -23,11 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
             const startTime = document.getElementById('startTime').value;
-            const endTime = document.getElementById('endTime');
-            const slotDuration = document.getElementById('slotDuration');
+            const endTime = document.getElementById('endTime').value; // Added .value
+            const slotDuration = document.getElementById('slotDuration').value; // Added .value
 
             if(new Date(startDate) > new Date(endDate)) {
-                
                 showError("Active End Date must be after or equal to the Start Date.");
                 return;
             }
@@ -37,11 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Creating Page...`;
 
             try{
-
                 const response = await api.fetchWithAuth('/api/scheduler/create',  {
                     method: 'POST',
                     body: JSON.stringify ({
-
                         title,
                         startDate,
                         endDate,
@@ -54,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("Scheduler API Success response", response);
 
                 const publicLink = response.publicLink;
-
                 const publicBookingUrl = `${window.location.protocol}//${window.location.host}/book.html?link=${publicLink}`;
 
                 if(publicLinkInput) {
@@ -68,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } catch(error){
                 console.error("Failed to create scheduler:", error);
-                showError(error.message || "An unexpected error occured while saving the scheduler page.");
+                showError(error.message || "An unexpected error occurred while saving the scheduler page.");
 
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
@@ -95,31 +89,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 copyBtn.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
                 copyBtn.classList.add('btn-success');
 
-
                 setTimeout(() => {
                     copyBtn.innerHTML = originalText;
                     copyBtn.classList.remove('btn-success');
-
                 }, 2000);
             })
             .catch(err => {
                 console.error("Failed to copy link: ", err);
-                alert("Could not copy link automatically. Please select the text box and copy manual.");
+                alert("Could not copy link automatically. Please select the text box and copy manually.");
             });
         });
     }
 
     if(logoutBtn){
         logoutBtn.addEventListener('click', () => {
-            if (confirm("Are you sure you want to  log out?")) {
-                firebase.auth().signOut()
-                .then(() => {
+            if (confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem('myapt_user');
+                if (typeof firebase !== 'undefined' && firebase.auth && firebase.apps && firebase.apps.length > 0) {
+                    firebase.auth().signOut()
+                    .then(() => {
+                        window.location.href = '/login';
+                    })
+                    .catch(err => {
+                        console.error("Logout failed: ", err);
+                        window.location.href = '/login';
+                    });
+                } else {
                     window.location.href = '/login';
-                })
-                .catch(err => {
-                    console.error("Logout failed: ", err);
-                    alert("Sign out failed: " + err.message);
-                });
+                }
             }
         });
     }
