@@ -85,8 +85,34 @@
                         <i class="fas fa-exclamation-circle"></i>
                         <span id="formErrorText">Something went Wrong.</span>
                     </div>
+
+                    <form id="bookingForm" autocomplete="off">
+                        <div class="book-form-grid">
+                            <div class="book-form-group">
+                                <label for="customerName" name="customerName">Full Name<span class="required-star">*</span></label>
+                                <input type="text" id="customerName" name="customerName" placeholder="e.g. Sanskar" required>
+                            </div>
+
+                            <div class="book-form-group">
+                                <label for="customerEmail">Email Address<span class="required-star">*</span></label>
+                                <input type="email" id="customerEmail" name="customerEmail" placeholder="e.g. user@example.com" required>
+                            </div>
+
+                            <div class="book-form-group full-width">
+                                <label for="customerMessage">Message <small style="color: var(--text-light); font-weight: 400;">(optional)</small></label>
+                                <textarea id="customerMessage" name="customerMessage" placeholder="Anything you'd like to share before the appointment..." rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="book-submit-btn" id="submitBtn" disabled>
+                            <span class="btn-label"><i class="fas fa-check-circle"></i> Confirm Booking</span>
+                            <span class="btn-spinner"></span>
+                        </button>
+                    </form>
                 </div>
             </div>
+
+            
             
         </div>
     </div>
