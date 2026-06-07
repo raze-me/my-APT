@@ -73,5 +73,9 @@ def dashboard():
 def create_scheduler():
     return render_template('create-scheduler.html')
 
+@app.route('/book')
+def book():
+    return render_template('book.html')
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
