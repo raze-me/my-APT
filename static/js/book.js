@@ -121,6 +121,209 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             grouped[slot.date].push(slot);
         });
+
+        const sortedDate = Object.keys(grouped).sort();
+
+        sortedDates.forEach(dateStr => {
+            const dateGroup = document.createElement('div');
+            dateGroup.className = 'date-group';
+
+            const daySlots = grouped[dateStr];
+            const friendlyDate = formatDate(dateStr);
+            const dayName = getDayName(dateStr);
+            const slotCount = daySlots.length;
+
+            dateGroup.innerHTML = `
+            <div class="date-group-header">
+                <div class="date-icon"><i class="fas fa-calendar-day"></i></div>
+            <div>
+                <div class="date-label">${friendlyDate}</div>
+                <div class="date-sublabel">${dayName} . ${slotCount} slot${slotCount > 1 ? 's' : ''} available</div>
+            </div>
+            <div class="slots-row" data-date="${dateStr}"></div>
+            `;
+        
+            const slotsRow = dateGroup.querySelector('.slots-row');
+
+            daySlots.forEach(slot => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'slot-btn';
+                btn.setAttribute('data-date', slot.date);
+                btn.setAttribute('data-smart', slot.start);
+                btn.setAttribute('data-end', slot.end);
+                btn.innerHTML = `<i class="fas fa-clock slot-icon"></i> ${formatTime(slot.start)} ${formatTime(slot.end)}`;
+
+                btn.addEventListener('click', () => selectSlot(btn, slot));
+
+                slotsRow.appendChild(btn);
+            });
+            slotsContatiner.appendChild(dateGroup);
+        });
     }
 
-})
+    function selectSlot(buttonEl, slot) {
+
+        document.querySelectorAll('.slot-btn.selected').forEach(btn => btn.classList.remove('selected'));
+
+        buttonEl.classList.add('selected');
+        selectedSlot = slot;
+
+        slotsPreview.style.dsiplay = 'flex';
+        previewSlotText.textContent = `${formatDate(slot.date)} . ${formatTime(slot.start)} ${formatTime(slot.end)}`;
+
+        bookingFormCard.classList.add('active');
+        submitBtn.disabled = false;
+
+        bookkingFormCard.scrollIntoView({ behaviour: 'smooth', block: 'center'});
+
+        hideFormError();
+    }
+
+    bookingForm.addEventListener('submit', async (e) => {
+
+        e.preventDefault();
+
+        if(!selectedSlot) {
+            showFormError('Please select a time slot before submitting.');
+            return;
+        }
+
+        const name = document.getElementById('customerName').value.trim();
+        const email = document.getElementById('customerEmail').value.trim();
+        const message = document.getElementById('customerMessage').value.trim();
+
+        if(!name || !email) {
+            showFormError('Please fill in your name and email address');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(email)) {
+            showFormError('Please enter a valid email address.');
+            return;
+        }
+
+        submitBtn.classList.add(loading);
+        submitBtn.disabled = true;
+        hidFormError();
+
+        try {
+            const response = await fetch(`/api/booking/book`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    schedulerLink: publicLink,
+                    date: selectedSlot.date,
+                    startTime: selectedSlot.start,
+                    endTime: selectedSlot.end,
+                    customerName: name,
+                    customerEmail: email,
+                    customerMessage: message
+                })
+            });
+
+            const data = await response.json().catch(() => ({}));
+
+            if(!response.ok) {
+                throw new Error(data.error || 'Booking failed. Please try again');
+            }
+
+            showSuccess(name, email, selectedSlot);
+        } catch(err) {
+            console.error('Booking error:', err);
+            showFormError(err.message || 'Something went wrong. Please try again');
+            submitBtn.disabled = false;
+        }
+    });
+
+    function showSuccess(name, email, slot) {
+        mainContent.style.display = 'none';
+
+        confirmationDetails.innerHTML = `
+        <div class="conf-row">
+            <div class="conf-icon"><i class="fas fa-calendar-day"></i></div>
+            <div>
+                <div class="conf-label">Date</div>
+                <div class="conf-value">${formatDate(slot.date)} (${getDayName(slot.date)})</div>
+            </div>
+        </div>
+        <div class="conf-row">
+            <div class="conf-icon"><i class="fas fa-clock"></i></div>
+            <div>
+                <div class="conf-label">Time</div>
+                <div class="conf-value">${formatTime(slot.start)} ${formatTime(slot.end)}</div>
+            </div>
+        </div>
+        <div class="conf-row">
+            <div class="conf-icon"><i class="fas fa-user"></i></div>
+            <div>
+                <div class="conf-row">Name</div>
+                <div class="conf-value">${escapeHtml(name)}</div>
+            </div>
+        </div>
+        <div class="conf-row">
+            <div class="conf-icon"><i class="fas fa-envelop"></i></div>
+            <div>
+                <div class="conf-label">Email</div>
+                <div class="conf-value">${escapeHtml(name)}</div>
+            </div>
+        </div>
+        ${schedulerData ? `
+            
+            <div class="conf-row">
+                <div class="conf-icon"><i class="fas fa-bookmark"></i></div>
+                <div>
+                    <div class="conf-label">Appointment</div>
+                    <div class="conf-value">${escapeHtml(schedulerData.title)}</div>
+                </div>
+            </div>
+            
+            `: ''}
+
+
+        `;
+
+        successState.style.display = 'block';
+        successState.scrollIntoView({ behaviour: 'smooth', block: 'start'});
+    }
+
+    function showFormError(msg) {
+        formErrorText.textContent = msg;
+        formError.classList.add('visible');
+    }
+
+    function hideFormError() {
+        formError.classList.remove('visible');
+    }
+
+    function formatDate(dateStr) {
+        if(!dateStr) return '-';
+        try {
+            const parts = dateStr.split('-');
+            const d = new Date(parts[0], parts[1] - 1, parts[2]);
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric'});
+        } catch {
+            return dateStr;
+        }
+    }
+
+    function getDayName(dateStr) {
+        if(!dateStr) return '';
+        try {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const h = hours % 12 || 12;
+            return `${h}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+        } catch {
+            return timeStr;
+        }
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+});
