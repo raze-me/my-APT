@@ -8,6 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyBtn = document.getElementById('copy-btn');
     const logoutBtn = document.getElementById('logout-btn');
 
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    if (startDateInput) {
+        startDateInput.setAttribute('min', todayStr);
+        startDateInput.addEventListener('change', () => {
+            if (endDateInput) endDateInput.setAttribute('min', startDateInput.value || todayStr);
+        });
+    }
+    if (endDateInput) {
+        endDateInput.setAttribute('min', todayStr);
+    }
+
     if(form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -21,11 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
             const startTime = document.getElementById('startTime').value;
-            const endTime = document.getElementById('endTime').value; // Added .value
-            const slotDuration = document.getElementById('slotDuration').value; // Added .value
+            const endTime = document.getElementById('endTime').value; 
+            const slotDuration = document.getElementById('slotDuration').value; 
 
-            if(new Date(startDate) > new Date(endDate)) {
-                showError("Active End Date must be after or equal to the Start Date.");
+             if (startDate < todayStr) {
+                showError("Start Date cannot be before today's date.");
+                return;
+            }
+            if (endDate < startDate) {
+                showError("End Date cannot be before the Start Date.");
                 return;
             }
 

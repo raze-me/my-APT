@@ -6,21 +6,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
     const userGreeting = document.getElementById('user-display-email');
 
-    const bookingSession = document.getElementById('booking-section');
-    const bookingLoading = document.getElementById('booking-loading');
-    const bookingList = document.getElementById('bookings-list');
-    const bookingEmpty = document.getElementById('bookings-empty');
+    const bookingsSection = document.getElementById('booking-section');
+    const bookingsLoading = document.getElementById('booking-loading');
+    const bookingsList = document.getElementById('bookings-list');
+    const bookingsEmpty = document.getElementById('bookings-empty');
     const bookingsStats = document.getElementById('bookings-stats');
 
     let allSchedulers = [];
     let allBookings = [];
 
-        if (typeof firebase !== 'undefined' && firebase.auth) {
+    if (typeof firebase !== 'undefined' && firebase.auth && firebase.apps && firebase.apps.length > 0) {
         firebase.auth().onAuthStateChanged(user => {
             if (user && userGreeting) {
                 userGreeting.textContent = user.email || user.displayName || "Active Host";
             }
         });
+    } else {
+        const savedUser = localStorage.getItem('myapt_user');
+        if (savedUser && userGreeting) {
+            try {
+                const user = JSON.parse(savedUser);
+                userGreeting.textContent = user.email || "Active Host";
+            } catch (e) {
+                userGreeting.textContent = "Active Host";
+            }
+        }
     }
 
     async function loadDashboard() {
@@ -332,13 +342,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             if (confirm("Are you sure you want to log out?")) {
-                firebase.auth().signOut()
-                    .then(() => {
-                        window.location.href = '/login';
-                    })
-                    .catch(err => {
-                        console.error("Logout failed:", err);
-                    });
+                localStorage.removeItem('myapt_user');
+                if (typeof firebase !== 'undefined' && firebase.auth && firebase.apps && firebase.apps.length > 0) {
+                    firebase.auth().signOut()
+                        .then(() => {
+                            window.location.href = '/login';
+                        })
+                        .catch(err => {
+                            console.error("Logout failed:", err);
+                            window.location.href = '/login';
+                        });
+                } else {
+                    window.location.href = '/login';
+                }
             }
         });
     }

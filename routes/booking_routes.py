@@ -1,7 +1,9 @@
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from firebase_admin import firestore
 from utils.slot_generator import generate_slots
+from routes.scheduler_routes import token_required
+from datetime import datetime
 
 booking_bp = Blueprint('booking_bp', __name__)
 
@@ -11,26 +13,6 @@ def get_db():
     except Exception as e:
         print(f"Error accesing Firestore database client in booking: {e}")
         return None
-
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-        if 'Authorization' in request.headers:
-            auth_header = request.headers['Authorization']
-            try:
-                token = auth_header.split(" ")[1]
-            except IndexError:
-                return jsonify({ "error": "Invalid Authorization header format."}), 401
-        if not token:
-            return jsonify({"error": "Invalid Authorization header format."}), 401
-        try:
-            decoded_token = auth.verify_id_token(token)
-            request.user = decoded_token
-        except Exception as e:
-            return jsonify({"error": f"Token verification failed: {str(e)}"}), 401
-        return f(*args, **kwargs)
-    return decorated
 
 
 @booking_bp.route('/slots/<link>', methods=['GET'])
@@ -100,12 +82,10 @@ def book_slot():
         if not all([schedulerLink, date, startTime, endTime, customerName, customerEmail]):
             return jsonify({"error": "Missing required fields for booking."}), 400
 
-        # Validate that the scheduler link exists
         scheduler_doc = db.collection('schedulers').document(schedulerLink).get()
         if not scheduler_doc.exists:
             return jsonify({"error": f"Scheduler page with link code '{schedulerLink}' not found"}), 404
 
-        # Check if the slot is already booked
         existing_bookings = db.collection('bookings') \
             .where('schedulerLink', '==', schedulerLink) \
             .where('date', '==', date) \
@@ -115,7 +95,6 @@ def book_slot():
         for doc in existing_bookings:
             return jsonify({"error": "This slot has already been booked."}), 400
 
-        # Save booking to Firestore
         from datetime import datetime
         booking_id = f"{schedulerLink}_{date}_{startTime.replace(':', '')}"
         booking_doc = {
@@ -140,7 +119,7 @@ def book_slot():
     except Exception as e:
         return jsonify({"error": f"Failed to complete booking: {str(e)}"}), 500
 
-@booking_bp_routes('/my', methods=['GET'])
+@booking_bp.route('/my', methods=['GET'])
 @token_required
 def get_my_bookings():
     db = get_db()
@@ -169,7 +148,7 @@ def get_my_bookings():
                     b['createdAt'] = b['createdAt'].isoformat()
                 all_bookings.append(b)
 
-        all_bookings.sort(key=lambda x: (x.get('date', ''), x.get('startTimem', '')))
+        all_bookings.sort(key=lambda x: (x.get('date', ''), x.get('startTime', '')))
 
         return jsonify(all_bookings), 200
     

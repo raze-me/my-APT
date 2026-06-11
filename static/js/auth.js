@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('myapt_user') && window.location.pathname === '/login') {
+        window.location.href = '/dashboard';
+        return;
+    }
+
     const firebaseConfig = window.firebaseConfig || {
         apiKey: "",
         authDomain: "",

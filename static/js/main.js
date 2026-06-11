@@ -1,5 +1,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('myapt_user') && (window.location.pathname === '/' || window.location.pathname === '/index.html')) {
+        window.location.href = '/dashboard';
+        return;
+    }
 
     const menuToggle = document.getElementById('menu-toggle-btn');
     const navMenu = document.getElementById('navigation-menu');
