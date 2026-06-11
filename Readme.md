@@ -114,6 +114,11 @@ When a customer submits a booking, the server checks one more time that the slot
 - **Live Dashboard**
 - **Public booking links**
 
+## Contributing
+
+Contributions are welcome. Fork the repo, make your changes on a new branch, and open an issue to discuss first.
+
+
 ## Requirements
 
 Python 3.9+
