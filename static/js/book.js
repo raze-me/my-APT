@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const ownerEmailEl = document.getElementById('ownerEmail');
     const schedulerTitleEl = document.getElementById('schedulerTitle');
-    const metaDataRange = document.getElementById('metaDataRange');
+    const metaDateRange = document.getElementById('metaDateRange');
     const metaTimeRange = document.getElementById('metaTimeRange');
     const metaDuration = document.getElementById('metaDuration');
     
-    const slotsContatiner = document.getElementById('slotsDuration');
+    const slotsContainer = document.getElementById('slotsContainer');
     const noSlotsState = document.getElementById('noSlotsState');
     
     const bookingFormCard = document.getElementById('bookingFormCard');
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let schedulerData = null;
     let selectedSlot = null;
 
-    const urlParams = new URLSearchParamss(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
     const publicLink = urlParams.get('link');
 
     if(!publicLink) {
@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
 
             const [schedulerRes, slotsRes] = await Promise.all([
-                fetch(`/api/scheduler/public/&{publicLink}`),
-                fetch(`/api/booking/slots/&{publicLink}`)
+                fetch(`/api/scheduler/public/${publicLink}`),
+                fetch(`/api/booking/slots/${publicLink}`)
             ]);
 
             if (!schedulerRes.ok) {
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderSlots(slots) {
-        slotsContatiner.innerHTML = '';
+        slotsContainer.innerHTML = '';
 
         if(!slots || slots.length === 0) {
             noSlotsState.style.display = 'block';
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             grouped[slot.date].push(slot);
         });
 
-        const sortedDate = Object.keys(grouped).sort();
+        const sortedDates = Object.keys(grouped).sort();
 
         sortedDates.forEach(dateStr => {
             const dateGroup = document.createElement('div');
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.type = 'button';
                 btn.className = 'slot-btn';
                 btn.setAttribute('data-date', slot.date);
-                btn.setAttribute('data-smart', slot.start);
+                btn.setAttribute('data-start', slot.start);
                 btn.setAttribute('data-end', slot.end);
                 btn.innerHTML = `<i class="fas fa-clock slot-icon"></i> ${formatTime(slot.start)} ${formatTime(slot.end)}`;
 
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 slotsRow.appendChild(btn);
             });
-            slotsContatiner.appendChild(dateGroup);
+            slotsContainer.appendChild(dateGroup);
         });
     }
 
@@ -169,13 +169,13 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonEl.classList.add('selected');
         selectedSlot = slot;
 
-        slotsPreview.style.dsiplay = 'flex';
+        slotsPreview.style.display = 'flex';
         previewSlotText.textContent = `${formatDate(slot.date)} . ${formatTime(slot.start)} ${formatTime(slot.end)}`;
 
         bookingFormCard.classList.add('active');
         submitBtn.disabled = false;
 
-        bookkingFormCard.scrollIntoView({ behaviour: 'smooth', block: 'center'});
+        bookingFormCard.scrollIntoView({ behavior: 'smooth', block: 'center'});
 
         hideFormError();
     }
@@ -204,9 +204,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        submitBtn.classList.add(loading);
+        submitBtn.classList.add('loading');
         submitBtn.disabled = true;
-        hidFormError();
+        hideFormError();
 
         try {
             const response = await fetch(`/api/booking/book`, {
@@ -258,15 +258,15 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="conf-row">
             <div class="conf-icon"><i class="fas fa-user"></i></div>
             <div>
-                <div class="conf-row">Name</div>
+                <div class="conf-label">Name</div>
                 <div class="conf-value">${escapeHtml(name)}</div>
             </div>
         </div>
         <div class="conf-row">
-            <div class="conf-icon"><i class="fas fa-envelop"></i></div>
+            <div class="conf-icon"><i class="fas fa-envelope"></i></div>
             <div>
                 <div class="conf-label">Email</div>
-                <div class="conf-value">${escapeHtml(name)}</div>
+                <div class="conf-value">${escapeHtml(email)}</div>
             </div>
         </div>
         ${schedulerData ? `
@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         successState.style.display = 'block';
-        successState.scrollIntoView({ behaviour: 'smooth', block: 'start'});
+        successState.scrollIntoView({ behavior: 'smooth', block: 'start'});
     }
 
     function showFormError(msg) {
@@ -310,6 +310,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getDayName(dateStr) {
         if(!dateStr) return '';
+        try {
+            const parts = dateStr.split('-');
+            const d = new Date(parts[0], parts[1] - 1, parts[2]);
+            return d.toLocaleDateString('en-US', { weekday: 'long' });
+        } catch {
+            return '';
+        }
+    }
+
+    function formatTime(timeStr) {
+        if(!timeStr) return '';
         try {
             const [hours, minutes] = timeStr.split(':').map(Number);
             const ampm = hours >= 12 ? 'PM' : 'AM';

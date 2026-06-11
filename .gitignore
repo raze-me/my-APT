@@ -71,3 +71,10 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Firebase / GCP private credentials
+serviceAccountKey.json
+
+# Python compiled files
+__pycache__/
+*.pyc

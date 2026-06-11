@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book an Appointment - myAPT</title>
 
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/book.css') }}">
 </head>
 <body class="book-body">
     
@@ -19,119 +23,118 @@
     <div class="book-container" id="bookContainer">
 
         <div class="loading-state" id="loadingState">
-            <div class="loading-spinner">
-                <p>Loading available time slots...</p>
-            </div>
-
-            <div class="error-state" id="errorState" style="display: none;">
-                <div class="error-icon-box">
-                    <i class="fas fa-link-slash"></i>
-                </div>
-                <h2 id="errorTitle">This booking link is invalid or expired</h2>
-                <p id="errorMessage">The scheduling page you're looking for doesnt exist or may have been by its owner.</p>
-                <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to myAPT</a>
-            </div>
-
-            <div id="mainContent" style="display: none;">
-
-                <div class="scheduler-header-card fade-in-up" id="schedulerHeader">
-                    <div class="scheduler-owner">
-                        <i class="faas fa-user-circle"></i>
-                        <span id="ownerEmail">-</span>
-                    </div>
-                    <h1 class="scheduler-title" id="schedulerTitle">-</h1>
-                    <div class="scheduler-meta">
-                        <div class="meta-chip">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span id="metaDateRange">-</span>
-                            <div class="meta-chip">
-                                <i class="fas fa-clock"></i>
-                                <span id="MetaTimeRange"></span>
-                            </div>
-                            <div class="meta-chip">
-                                <i class="fas fa-hourglass-half"></i>
-                                <span id="metaDuration">-</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="slot-section fade-in-up fade-in-up-delay-1" id="slotSection">
-                        <div class="section-label">
-                            Select a Time Slot
-                        </div>
-                        <div id="slotsContainer">
-                        </div>
-                        <div class="no-slots-icon-box">
-                            <i class="fas fa-calendar-xmark"></i>
-                        </div>
-                        <h2>No slots available</h2>
-                        <p>All available time slots for this scheduler have been booked. Please check back later or contact the organiser</p>
-                    </div>
-                </div>
-
-                <div class="booking-form-card fade-in-up-delay-2" id="bookingFormCard">
-                    <h3 class="form-title">Your Details</h3>
-                    <p class="form-subtitle">Fill in your information to confirm the appointment.</p>
-
-                    <div class="seelcted-slot-preview" id="slotsPreview" style="display: none;">
-                        <div class="preview-icon"><i class="fas fa-calendar-check"></i></div>
-                        <div class="preview-text">
-                            <span>Selected Slot</span>
-                            <strong id="previewSlotText">-</strong>
-                        </div>
-                    </div>
-
-                    <div class="form-error-msg" id="formError">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <span id="formErrorText">Something went Wrong.</span>
-                    </div>
-
-                    <form id="bookingForm" autocomplete="off">
-                        <div class="book-form-grid">
-                            <div class="book-form-group">
-                                <label for="customerName" name="customerName">Full Name<span class="required-star">*</span></label>
-                                <input type="text" id="customerName" name="customerName" placeholder="e.g. Sanskar" required>
-                            </div>
-
-                            <div class="book-form-group">
-                                <label for="customerEmail">Email Address<span class="required-star">*</span></label>
-                                <input type="email" id="customerEmail" name="customerEmail" placeholder="e.g. user@example.com" required>
-                            </div>
-
-                            <div class="book-form-group full-width">
-                                <label for="customerMessage">Message <small style="color: var(--text-light); font-weight: 400;">(optional)</small></label>
-                                <textarea id="customerMessage" name="customerMessage" placeholder="Anything you'd like to share before the appointment..." rows="3"></textarea>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="book-submit-btn" id="submitBtn" disabled>
-                            <span class="btn-label"><i class="fas fa-check-circle"></i> Confirm Booking</span>
-                            <span class="btn-spinner"></span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="success-state" id="successState" style="display: none;">
-                <div class="success-checkmark-wrapper">
-                    <i class="fas fa-check"></i>
-                </div>
-                <h2>Booking Confirmed~</h2>
-                <p class="succes-subtitle">Your appointment has been successfully booked. You'll reveive a confirmation email shortly.</p>
-
-                <div class="confirmation-card" id="confirmationDetails">
-
-                </div>
-                <a href="/" class="back-home-btn"><i class="fas fa-arrow-left"></i> Back to myAPT</a>
-            </div>
-
-            
+            <div class="loading-spinner"></div>
+            <p>Loading available time slots...</p>
         </div>
+
+        <div class="error-state" id="errorState" style="display: none;">
+            <div class="error-icon-box">
+                <i class="fas fa-link-slash"></i>
+            </div>
+            <h2 id="errorTitle">This booking link is invalid or expired</h2>
+            <p id="errorMessage">The scheduling page you're looking for doesn't exist or may have been removed by its owner.</p>
+            <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to myAPT</a>
+        </div>
+
+        <div id="mainContent" style="display: none;">
+
+            <div class="scheduler-header-card fade-in-up" id="schedulerHeader">
+                <div class="scheduler-owner">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="ownerEmail">-</span>
+                </div>
+                <h1 class="scheduler-title" id="schedulerTitle">-</h1>
+                <div class="scheduler-meta">
+                    <div class="meta-chip">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="metaDateRange">-</span>
+                    </div>
+                    <div class="meta-chip">
+                        <i class="fas fa-clock"></i>
+                        <span id="metaTimeRange">-</span>
+                    </div>
+                    <div class="meta-chip">
+                        <i class="fas fa-hourglass-half"></i>
+                        <span id="metaDuration">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slot-section fade-in-up fade-in-up-delay-1" id="slotSection">
+                <div class="section-label">
+                    Select a Time Slot
+                </div>
+                <div id="slotsContainer">
+                </div>
+                <div id="noSlotsState" style="display: none;">
+                    <div class="no-slots-icon-box">
+                        <i class="fas fa-calendar-xmark"></i>
+                    </div>
+                    <h2>No slots available</h2>
+                    <p>All available time slots for this scheduler have been booked. Please check back later or contact the organizer.</p>
+                </div>
+            </div>
+
+            <div class="booking-form-card fade-in-up-delay-2" id="bookingFormCard">
+                <h3 class="form-title">Your Details</h3>
+                <p class="form-subtitle">Fill in your information to confirm the appointment.</p>
+
+                <div class="selected-slot-preview" id="slotsPreview" style="display: none;">
+                    <div class="preview-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="preview-text">
+                        <span>Selected Slot</span>
+                        <strong id="previewSlotText">-</strong>
+                    </div>
+                </div>
+
+                <div class="form-error-msg" id="formError">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="formErrorText">Something went wrong.</span>
+                </div>
+
+                <form id="bookingForm" autocomplete="off">
+                    <div class="book-form-grid">
+                        <div class="book-form-group">
+                            <label for="customerName">Full Name<span class="required-star">*</span></label>
+                            <input type="text" id="customerName" name="customerName" placeholder="e.g. Sanskar" required>
+                        </div>
+
+                        <div class="book-form-group">
+                            <label for="customerEmail">Email Address<span class="required-star">*</span></label>
+                            <input type="email" id="customerEmail" name="customerEmail" placeholder="e.g. user@example.com" required>
+                        </div>
+
+                        <div class="book-form-group full-width">
+                            <label for="customerMessage">Message <small style="color: var(--text-light); font-weight: 400;">(optional)</small></label>
+                            <textarea id="customerMessage" name="customerMessage" placeholder="Anything you'd like to share before the appointment..." rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="book-submit-btn" id="submitBtn" disabled>
+                        <span class="btn-label"><i class="fas fa-check-circle"></i> Confirm Booking</span>
+                        <span class="btn-spinner"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="success-state" id="successState" style="display: none;">
+            <div class="success-checkmark-wrapper">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2>Booking Confirmed~</h2>
+            <p class="success-subtitle">Your appointment has been successfully booked. You'll receive a confirmation email shortly.</p>
+
+            <div class="confirmation-card" id="confirmationDetails">
+            </div>
+            <a href="/" class="back-home-btn"><i class="fas fa-arrow-left"></i> Back to myAPT</a>
+        </div>
+
     </div>
+    
     <div class="book-footer">
         <p>Powered by <a href="/">my<strong>APT</strong></a> - Appointment scheduling made simple.</p>
     </div>
-
 
     <script src="/static/js/book.js"></script>
 </body>

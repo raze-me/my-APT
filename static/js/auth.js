@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         updateStatus("Redirecting to your dashboard...");
                         setTimeout(() => {
-                            window.location.href = '/';
+                            window.location.href = '/dashboard';
                         }, 1000);
                     }, 1000);
                 }, 1200);
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         setTimeout(() => {
                             updateStatus("Redirecting to your dashboard...");
                             setTimeout(() => {
-                                window.location.href = '/';
+                                window.location.href = '/dashboard';
                             }, 1000);
                         }, 1000);
                     })

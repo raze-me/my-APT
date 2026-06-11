@@ -25,32 +25,32 @@ def generate_slots(start_date, end_date, start_time, end_time, slot_duration_min
         elif isinstance(item, (tuple, list)) and len(item) >= 2:
             booked_set.add((item[0], item[1]))
 
-        slots =[]
-        current_d = start_d
-        duration = timedelta(minutes=int(slot_duration_mins))
+    slots = []
+    current_d = start_d
+    duration = timedelta(minutes=int(slot_duration_mins))
 
-        while current_d <= end_d:
-            date_str = current_d.strftime("%Y-%m-%d")
+    while current_d <= end_d:
+        date_str = current_d.strftime("%Y-%m-%d")
 
-            start_dt = datetime.strptime(f"{date_str} {start_time}", "%Y-%m-%d %H:%M")
-            end_dt = datetime.strptime(f"{date_str} {end_time}", "%Y-%m-%d %H:%M")
+        start_dt = datetime.strptime(f"{date_str} {start_time}", "%Y-%m-%d %H:%M")
+        end_dt = datetime.strptime(f"{date_str} {end_time}", "%Y-%m-%d %H:%M")
 
-            current_dt = start_dt
+        current_dt = start_dt
 
-            while current_dt + duration <= end_dt:
-                slot_start = current_dt.strftime("%H:%M")
+        while current_dt + duration <= end_dt:
+            slot_start = current_dt.strftime("%H:%M")
 
-                slot_end = (current_dt + duration).strftime("%H:%M")
+            slot_end = (current_dt + duration).strftime("%H:%M")
 
-                if(date_str, slot_start) not in booked_set:
-                    slots.append({
-                        "date": date_str,
-                        "start": slot_start,
-                        "end": slot_end
-                    })
+            if (date_str, slot_start) not in booked_set:
+                slots.append({
+                    "date": date_str,
+                    "start": slot_start,
+                    "end": slot_end
+                })
 
-                current_dt += duration
-            
-            current_d += timedelta(days=1)
+            current_dt += duration
         
-        return slots
+        current_d += timedelta(days=1)
+    
+    return slots

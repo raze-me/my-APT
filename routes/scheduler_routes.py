@@ -50,7 +50,7 @@ def create_scheduler():
     db = get_db()
     if not db: 
         return jsonify({
-            "error": "Firestore database client not initialized. Please ensure a valid seviceAccountKey.json is placed in thee project root."
+            "error": "Firestore database client not initialized. Please ensure a valid serviceAccountKey.json is placed in the project root."
         }), 500
     
     data = request.get_json() or {}

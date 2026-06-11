@@ -2,10 +2,8 @@ from flask import Flask, render_template
 import os
 import firebase_admin
 from firebase_admin import credentials
-from routes.scheduler_routes import scheduler_bp
 
 app = Flask(__name__)
-app.register_blueprint(scheduler_bp, url_prefix='/api/scheduler')
 
 firebase_initialized = False
 
@@ -74,6 +72,7 @@ def create_scheduler():
     return render_template('create-scheduler.html')
 
 @app.route('/book')
+@app.route('/book.html')
 def book():
     return render_template('book.html')
 
