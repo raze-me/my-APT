@@ -1,5 +1,23 @@
-# my-APT
----
+<h1 align="center">myAPT</h1>
+
+<p align="center">
+    <img src="static/images/logo.png" alt="myAPT" width="200">
+</p1>
+
+
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white" alt="Flask"/>
+  <img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=firebase&logoColor=black" alt="Firebase"/>
+  <img src="https://img.shields.io/badge/Firestore-FF6F00?style=flat&logo=firebase&logoColor=white" alt="Firestore"/>
+  <img src="https://img.shields.io/badge/HTML-E34F26?style=flat&logo=html5&logoColor=white" alt="HTML"/>
+  <img src="https://img.shields.io/badge/CSS-1572B6?style=flat&logo=css3&logoColor=white" alt="CSS"/>
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black" alt="JavaScript"/>
+  <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white" alt="GitHub"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat" alt="MIT License"/>
+</p>
+
 myAPT is an appointment scheduler web app, which can be used to book & manage appointments for ur business in the most easy and fastest way possible.
 Just configure ur schedule and post it to your customers!
 
